@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "GitHub": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/"
+    },
+    "cc-workflow-studio": {
+      "type": "http",
+      "url": "http://127.0.0.1:6282/mcp"
+    }
+  }
+}
