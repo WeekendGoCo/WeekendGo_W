@@ -1,40 +1,95 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;500;700;900&family=Poppins:wght@400;600;700;900&family=Inter:wght@400;500;600;700&display=swap');
+
 @import "tailwindcss";
 
 :root {
-  --background: #0f172a; /* Slate 900 for a deep luxurious feel */
-  --foreground: #f8fafc; /* Slate 50 */
-  --primary: #fbbf24; /* Amber 400 for a luxurious gold */
-  --primary-dark: #d97706; /* Amber 600 */
-  --card-bg: #1e293b; /* Slate 800 */
+  /* Weekend Go Brand Identity Colors */
+  --primary-blue: #0077C8;
+  --sky-blue: #22C7F2;
+  --dark-navy: #0D1B2A;
+  --lime-green: #A3E635;
+  --light-gray: #F5F7FA;
+  --deep-slate: #1F2937;
+  
+  --background: var(--dark-navy);
+  --foreground: #ffffff;
+  
+  --primary: var(--primary-blue);
+  --accent: var(--lime-green);
 }
 
 @theme inline {
+  --color-primary-blue: var(--primary-blue);
+  --color-sky-blue: var(--sky-blue);
+  --color-dark-navy: var(--dark-navy);
+  --color-lime-green: var(--lime-green);
+  --color-light-gray: var(--light-gray);
+  --color-deep-slate: var(--deep-slate);
+  
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-primary: var(--primary);
-  --color-primary-dark: var(--primary-dark);
-  --color-card: var(--card-bg);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-accent: var(--accent);
+  
+  --font-heading: 'Poppins', 'Cairo', sans-serif;
+  --font-body: 'Inter', 'Tajawal', sans-serif;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans), sans-serif;
+  font-family: 'Inter', 'Tajawal', sans-serif;
   overflow-x: hidden;
 }
 
-/* Custom Utilities for glassmorphism */
-.glass {
-  background: rgba(30, 41, 59, 0.6);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+/* Custom Utilities for Premium Feel */
+.glass-panel {
+  background: rgba(13, 27, 42, 0.7);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.lux-gradient {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.brand-gradient {
+  background: linear-gradient(135deg, var(--primary-blue), var(--sky-blue));
+}
+
+.accent-gradient {
+  background: linear-gradient(135deg, var(--lime-green), var(--sky-blue));
+}
+
+.dynamic-card {
+  border-radius: 2.5rem;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: var(--deep-slate);
+}
+
+.dynamic-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 30px 60px -15px rgba(0, 119, 200, 0.2);
+}
+
+/* Typography Overrides */
+h1, h2, h3, h4, .font-heading {
+  font-family: 'Poppins', 'Cairo', sans-serif;
+}
+
+[dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3, [dir="rtl"] h4, [dir="rtl"] .font-heading {
+  font-family: 'Cairo', sans-serif;
+}
+
+[dir="rtl"] body {
+  font-family: 'Tajawal', sans-serif;
+}
+
+/* Animations */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
 }
