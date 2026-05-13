@@ -1,0 +1,118 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// -----------------------------------------------------------------
+// Canonical Data (The single source of truth presented to the user)
+// -----------------------------------------------------------------
+
+model Hotel {
+  id          String   @id @default(cuid())
+  name        String
+  description String?  @db.Text
+  stars       Int      @default(0)
+  latitude    Float?
+  longitude   Float?
+  address     String?
+  city        String?
+  country     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relationships
+  rooms           Room[]
+  providerMappings HotelMapping[]
+  localContracts   LocalContract[]
+  images          HotelImage[]
+  reviews         Review[]
+}
+
+model Room {
+  id          String   @id @default(cuid())
+  hotelId     String
+  name        String   // Canonical name (e.g., "Deluxe Double Room with Sea View")
+  description String?  @db.Text
+  capacity    Int      @default(2)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  hotel       Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+}
+
+model HotelImage {
+  id        String   @id @default(cuid())
+  hotelId   String
+  url       String   // Cloudinary URL
+  isHero    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  hotel     Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+}
+
+// -----------------------------------------------------------------
+// Provider Mappings (For De-duplication & Sync)
+// -----------------------------------------------------------------
+
+model HotelMapping {
+  id         String   @id @default(cuid())
+  hotelId    String
+  provider   Provider // Enum: WEBBEDS, BOOKING, TBO
+  providerId String   // The ID on the provider's system
+  giataId    String?  // Global GIATA ID for cross-referencing if available
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  hotel      Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerId])
+  @@index([giataId])
+}
+
+enum Provider {
+  WEBBEDS
+  BOOKING
+  TBO
+}
+
+// -----------------------------------------------------------------
+// Micro-Extranet (Local Contracts)
+// -----------------------------------------------------------------
+
+model LocalContract {
+  id          String   @id @default(cuid())
+  hotelId     String
+  title       String   // e.g., "Summer Special 2026"
+  description String?  @db.Text
+  pricePerNight Float
+  currency    String   @default("USD")
+  validFrom   DateTime
+  validTo     DateTime
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  hotel       Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+}
+
+// -----------------------------------------------------------------
+// Reviews & Ratings
+// -----------------------------------------------------------------
+
+model Review {
+  id        String   @id @default(cuid())
+  hotelId   String
+  author    String
+  rating    Float
+  comment   String   @db.Text
+  createdAt DateTime @default(now())
+
+  hotel     Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+}

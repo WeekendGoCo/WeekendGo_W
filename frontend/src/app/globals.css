@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0f172a; /* Slate 900 for a deep luxurious feel */
+  --foreground: #f8fafc; /* Slate 50 */
+  --primary: #fbbf24; /* Amber 400 for a luxurious gold */
+  --primary-dark: #d97706; /* Amber 600 */
+  --card-bg: #1e293b; /* Slate 800 */
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-dark: var(--primary-dark);
+  --color-card: var(--card-bg);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom Utilities for glassmorphism */
+.glass {
+  background: rgba(30, 41, 59, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.lux-gradient {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
